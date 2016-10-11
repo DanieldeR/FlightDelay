@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- No Robots -->
+  <meta name="robots" content="noindex">
+
+  <title>Flight Delay Profile per US Carrier</title>
+
+  <!--Load bootstrap -->
+  <link href="./css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="icon" href="./resources/favicon.ico" />
+
+  <!-- load all of the JS dependencies -->
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+  <script src="./js/d3.slider.js"></script>
+  <script src="./js/jquery-2.2.4.min.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
+
+  <!--Load the CSS for the slider as well as the random custom CSS -->
+  <link rel="stylesheet" href="./css/d3.slider.css" />
+  <link rel="stylesheet" href="./css/flightProfile.css"  />
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <h1>Flight Delay Profile of Major US Carriers</h1>
+      <p class="intro">
+        Flight delays get worse every year! Travel tip: The later in the day you fly, the more you'll likely be delayed (If you have to fly, maybe a red-eye is best).
+      </p>
+    </div>
+
+    <div class="row">
+      <!-- Create a space for the chart -->
+      <div id="chartContainer"></div>
+    </div>
+
+      <!-- The controls will be kept in this row -->
+      <div class="row controls">
+
+        <!-- Add the current year being displayed -->
+        <h2 class="flex-center">Year:<div id="year"></div></h2>
+
+        <!-- Create a space for the slider -->
+        <div id="slider" class="d3-slider-horizontal"></div>
+
+        <!-- Add the buttons and center them -->
+        <div class="btn-container flex-center">
+          <button type="button" class="btn btn-default btn-lg" id="play"><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Play Animation</button>
+          <button type="button" class="btn btn-default btn-lg" id="pause"><span class="glyphicon glyphicon-pause" aria-hidden="true"></span>Pause Animation</button>
+        </div>
+      </div>
+
+      <div class="row tabs">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#summary" aria-controls="summary" role="tab" data-toggle="tab">Visualization Summary</a></li>
+          <li role="presentation"><a href="#design" aria-controls="profile" role="design" data-toggle="tab">Design</a></li>
+          <li role="presentation"><a href="#presentation" aria-controls="presentation" role="tab" data-toggle="tab">Presetation</a></li>
+          <li role="presentation"><a href="#features" aria-controls="features" role="tab" data-toggle="tab">Features</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="summary">
+            <h3>Inspiration and Summary</h3>
+            <p>This visualization is based on a visualization that is found on one of the posters that was entered into Data Expo '09 - from where the original data originates. Available <a href="http://stat-computing.org/dataexpo/2009/posters/hofmann-cook.pdf">HERE</a></p>
+            <p>I wanted to show the breakdown for each carrier instead of just showing the delay for all carriers combined. I also wanted to show more clearly the increasing amount of delay per year.</p>
+            <p>This visualization shows that the amount of delay is increasing every year and that the worst time to fly is definitely between 6 and 7PM.</p>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="design">
+            <h3>Visualization Design</h3>
+            <p>The original visualization does not breakdown the flights per carrier and provides the average amount of delay per hour for an entire year. When calculating averages for certain hours based on single carriers, a very different delay profile was found. </p>
+            <p>The problem is that for certain carriers and years there are very few flights at certain times of hour. This creates highly skewed flight delay profiles. Instead, the total amount of delay for an hour for a given airline was divided by the total number of flights per year for that airline. The resulting number is called a delay profile index. This index allows for easy airline comparison (since it is normalized to the number of flights per airline and therefore their size) as well as comparison from one hour to the next (since each hour is divided by the same denominator).</p>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="presentation">
+            <h3>Visualization Presentation</h3>
+            <p>A stacked bar chart was selected as it allows the user to easily see the total 'amount' of delay for a given hour. Since the purpose of this visualization is to show the change is delay per hour from one year to the next this seemed to be the best way to show these comparisons. </p>
+            <p>It's not easy to see one airline compared to another with this view however. To do so, the used by either only select the airlines that are of interest, or pause the animation and use the tooltips to find each airlines delay profile index.</p>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="features">
+            <h3>Features of the Visualization</h3>
+            <ul>
+              <li>The graph is animated and shows the amount of delay changing from one year to the next</li>
+              <li>The user can select/deselect which airlines that are displayed in the graph by selecting their corresponding colored boxes in the legend</li>
+              <li>The timeline on the bottom of the graph shows which year the animation is currently displaying as well simultaneously showing how many more years of data exist.</li>
+              <li>The user can move from one year to the next by moving the scroll bar.</li>
+              <li>Tooltips are provided to the user to further inspect the delay index values for each airline.</li>
+              <li>The display is responsive. The visualization will adapt to the size of the page</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- This is the block of text that is displayed to the user when the page is first loaded -->
+  <div id="welcome" class="welcome">
+    <h1 class="welcome-button">Welcome!</h1>
+    <p>This is a visualization of the amount of delay per major US flight carrier per hour during an entire year. The animation shows what happens to the delay from one year to the next.</p>
+    <p>The measure on the y-axis is called the delay profile. This is basically the total amount of delay incurred by the airline during a given hour. It's scalled to the carrier size and year - so you can easilly compare one carrier to the next as well as one year to the next. A larger delay profile means the airline's flights where more delayed that hour. A negative delay profile means that the flights were ahead of schedule.</p>
+    <p>If you're ready to see the visualization, click the button below.</p>
+    <button id="welcomeButton" class="btn btn-default btn-lg welcome-button">Click ME to Continue!</button>
+  </div>
+
+  <!-- Call the javascript file -->
+  <script src="./js/carrierDelays.js"></script>
+
+  <!-- Google Analytics -->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-84826503-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
