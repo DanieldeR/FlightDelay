@@ -1,5 +1,7 @@
 # Flight Delay Visualization of Major US Airlines
 
+Live version of the visualization available here: http://derepentigny.ca/projects/flight-delay.html
+
 The data used to make this visualization is available here: http://stat-computing.org/dataexpo/2009/
 
 /data/clean.R contains the code for taking the dataset and creating the .csv file used in this visualization.
